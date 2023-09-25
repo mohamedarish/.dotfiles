@@ -1,5 +1,5 @@
 local cmp = require "cmp"
-
+--
 local plugins = {
     {
         "williamboman/mason.nvim",
