@@ -2,20 +2,20 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Lazy.nvim for package management
-local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system {
+	vim.fn.system({
 		"git",
 		"clone",
 		"--filter=blob:none",
 		"https://github.com/folke/lazy.nvim.git",
 		"--branch=stable", -- latest stable release
 		lazypath,
-	}
+	})
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup {
+require("lazy").setup({
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
@@ -29,7 +29,7 @@ require("lazy").setup {
 		"joshdick/onedark.vim",
 		priority = 1000,
 		config = function()
-			vim.cmd.colorscheme "onedark"
+			vim.cmd.colorscheme("onedark")
 		end,
 	},
 	{
@@ -72,7 +72,7 @@ require("lazy").setup {
 			},
 		},
 	},
-}
+})
 
 -- Sync clipboard between OS and Neovim.
 vim.o.clipboard = "unnamedplus"
