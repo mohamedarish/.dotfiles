@@ -47,11 +47,9 @@ require("lazy").setup {
 				theme = "auto",
 				component_separators = { left = "", right = "" },
 				section_separators = { left = "", right = "" },
-				disabled_filetypes = {
-					"Neotree",
-				},
+				disabled_filetypes = {},
 				ignore_focus = {
-					"Neotree"
+					"neo-tree",
 				},
 				always_divide_middle = true,
 				globalstatus = false,
@@ -116,8 +114,73 @@ require("lazy").setup {
 		opts = {},
 	},
 
-	-- "gc" to comment visual regions/lines
-	{ "numToStr/Comment.nvim", opts = {} },
+	-- "[space]/" to comment visual regions/lines
+	{
+		"terrortylor/nvim-comment",
+		config = function()
+			require("nvim_comment").setup {}
+		end,
+	},
+
+	-- Fuzzy Finder (files, lsp, etc)
+	{
+		"nvim-telescope/telescope.nvim",
+		branch = "0.1.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			-- Fuzzy Finder Algorithm which requires local dependencies to be built.
+			-- Only load if `make` is available. Make sure you have the system
+			-- requirements installed.
+			{
+				"nvim-telescope/telescope-fzf-native.nvim",
+				-- NOTE: If you are having trouble with this installation,
+				--       refer to the README for telescope-fzf-native for more instructions.
+				build = "make",
+				cond = function()
+					return vim.fn.executable "make" == 1
+				end,
+			},
+		},
+	},
+
+	{
+		-- Highlight, edit, and navigate code
+		"nvim-treesitter/nvim-treesitter",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter-textobjects",
+		},
+		build = ":TSUpdate",
+	},
+
+	-- rust config
+	{
+		"simrat39/rust-tools.nvim",
+		ft = "rust",
+		dependencies = "neovim/nvim-lspconfig",
+		config = function(_, opts)
+			require("rust-tools").setup(opts)
+		end,
+	},
+	{
+		"saecki/crates.nvim",
+		ft = { "toml" },
+		config = function(_, opts)
+			local crates = require "crates"
+			crates.setup(opts)
+			require("cmp").setup.buffer {
+				sources = { { name = "crates" } },
+			}
+			crates.show()
+			require("core.utils").load_mappings "crates"
+		end,
+	},
+	{
+		"rust-lang/rust.vim",
+		ft = "rust",
+		init = function()
+			vim.g.rustfmt_autosave = 1
+		end,
+	},
 }
 
 local on_attach = function(_, bufnr)
@@ -168,12 +231,222 @@ require("neodev").setup()
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-require("lspconfig").lua_ls.setup {
+local lspconfig = require "lspconfig"
+
+lspconfig.lua_ls.setup {
 	capabilities = capabilities,
 	on_attach = on_attach,
 	filetypes = { "lua" },
 }
 
+lspconfig.clangd.setup {
+	on_attach = function(client, bufnr)
+		client.server_capabilities.signatureHelpProvider = false
+		on_attach(client, bufnr)
+	end,
+	capabilities = capabilities,
+	filetypes = { "C", "C++" },
+}
+
+require("rust-tools").setup {
+	server = {
+		on_attach = function(client, bufnr)
+			require("rust-tools").inlay_hints.enable()
+			on_attach(client, bufnr)
+		end,
+		capabilities = capabilities,
+		settings = {
+			["rust-analyzer"] = {
+				lens = {
+					enable = true,
+				},
+				checkOnSave = {
+					enable = true,
+					command = "clippy",
+				},
+			},
+		},
+	},
+}
+
+-- Set highlight on search
+vim.o.hlsearch = false
+
+-- Sync clipboard between OS and Neovim.
+vim.o.clipboard = "unnamedplus"
+
+-- Enable break indent
+vim.o.breakindent = true
+
+-- Keep signcolumn on by default
+vim.wo.signcolumn = "yes"
+
+-- Enable mouse mode
+vim.o.mouse = "a"
+
+-- Make line numbers default
+vim.wo.number = true
+
+-- Save undo history
+vim.o.undofile = true
+
+vim.o.termguicolors = true
+
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+
+-- [[ Configure Telescope ]]
+-- See `:help telescope` and `:help telescope.setup()`
+require("telescope").setup {
+	defaults = {
+		mappings = {
+			i = {
+				["<C-u>"] = false,
+				["<C-d>"] = false,
+			},
+		},
+	},
+}
+
+-- Keymaps for better default experience
+-- See `:help vim.keymap.set()`
+vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
+
+-- Remap for dealing with word wrap
+vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
+-- key mappings for filetree
+vim.keymap.set("n", "<leader>o", "<CMD>Neotree toggle<CR>", { desc = "[O]pen filetree" })
+vim.keymap.set("n", "<leader>f", "<CMD>Neotree focus<CR>", { desc = "focus [F]iletree focus" })
+
+vim.keymap.set("n", "<leader>/", "<CMD>CommentToggle<CR>", { desc = "[/]/ comment selected content" })
+vim.keymap.set("v", "<leader>/", "<CMD>'<,'>CommentToggle<CR>", { desc = "[/]/ comment selected content" })
+
+vim.keymap.set("n", "<leader>lf", "<CMD>!stylua .<CR>", { desc = "[L]ua [F]ormat" })
+vim.keymap.set("n", "<leader>rf", "<CMD>!cargo fmt<CR>", { desc = "[R]ust [F]ormat" })
+
+-- Enable telescope fzf native, if installed
+pcall(require("telescope").load_extension, "fzf")
+
+-- See `:help telescope.builtin`
+vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
+vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
+vim.keymap.set("n", "<leader>b", function()
+	-- You can pass additional configuration to telescope to change theme, layout, etc.
+	require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
+		winblend = 10,
+		previewer = false,
+	})
+end, { desc = "[/] Fuzzily search in current buffer" })
+
+vim.keymap.set("n", "<leader>gf", require("telescope.builtin").git_files, { desc = "Search [G]it [F]iles" })
+vim.keymap.set("n", "<leader>sf", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
+vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
+vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
+vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
+vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })
+vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = "[S]earch [R]esume" })
+
+-- [[ Configure Treesitter ]]
+-- See `:help nvim-treesitter`
+-- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
+vim.defer_fn(function()
+	require("nvim-treesitter.configs").setup {
+		-- Add languages to be installed here that you want installed for treesitter
+		ensure_installed = {
+			"c",
+			"cpp",
+			"go",
+			"lua",
+			"python",
+			"rust",
+			"tsx",
+			"javascript",
+			"typescript",
+			"vimdoc",
+			"vim",
+		},
+
+		-- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
+		auto_install = false,
+
+		highlight = { enable = true },
+		indent = { enable = true },
+		incremental_selection = {
+			enable = true,
+			keymaps = {
+				init_selection = "<c-space>",
+				node_incremental = "<c-space>",
+				scope_incremental = "<c-s>",
+				node_decremental = "<M-space>",
+			},
+		},
+		textobjects = {
+			select = {
+				enable = true,
+				lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+				keymaps = {
+					-- You can use the capture groups defined in textobjects.scm
+					["aa"] = "@parameter.outer",
+					["ia"] = "@parameter.inner",
+					["af"] = "@function.outer",
+					["if"] = "@function.inner",
+					["ac"] = "@class.outer",
+					["ic"] = "@class.inner",
+				},
+			},
+			move = {
+				enable = true,
+				set_jumps = true, -- whether to set jumps in the jumplist
+				goto_next_start = {
+					["]m"] = "@function.outer",
+					["]]"] = "@class.outer",
+				},
+				goto_next_end = {
+					["]M"] = "@function.outer",
+					["]["] = "@class.outer",
+				},
+				goto_previous_start = {
+					["[m"] = "@function.outer",
+					["[["] = "@class.outer",
+				},
+				goto_previous_end = {
+					["[M"] = "@function.outer",
+					["[]"] = "@class.outer",
+				},
+			},
+			swap = {
+				enable = true,
+				swap_next = {
+					["<leader>a"] = "@parameter.inner",
+				},
+				swap_previous = {
+					["<leader>A"] = "@parameter.inner",
+				},
+			},
+		},
+	}
+end, 0)
+
+-- Diagnostic keymaps
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+
+-- document existing key chains
+require("which-key").register {
+	["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
+	["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
+	["<leader>g"] = { name = "[G]it", _ = "which_key_ignore" },
+	["<leader>h"] = { name = "More git", _ = "which_key_ignore" },
+	["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
+	["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
+	["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+}
+
+-- See `:help cmp`
 local cmp = require "cmp"
 local luasnip = require "luasnip"
 require("luasnip.loaders.from_vscode").lazy_load()
@@ -219,42 +492,3 @@ cmp.setup {
 		{ name = "luasnip" },
 	},
 }
-
--- Sync clipboard between OS and Neovim.
-vim.o.clipboard = "unnamedplus"
-
--- Make line numbers default
-vim.wo.number = true
-
--- Save undo history
-vim.o.undofile = true
-
-vim.o.termguicolors = true
-
--- key mappings for filetree
-vim.keymap.set("n", "<leader>o", "<CMD>Neotree toggle<CR>", { desc = "[O]pen filetree" })
-vim.keymap.set("n", "<leader>e", "<CMD>Neotree focus<CR>", { desc = "[E]nable filetree focus" })
-
-local formatters = {
-	lua = "stylua .",
-	rust = "cargo fmt",
-}
-
-vim.keymap.set("n", "<leader>lf", "<CMD>!stylua .<CR>", { desc = "[L]ua [F]ormat" })
-vim.keymap.set("n", "<leader>rf", "<CMD>!cargo fmt<CR>", { desc = "[R]ust [F]ormat" })
-
-local function formatFile(filename)
-	local extension = string.match(filename, "%.([^%.]+)$")
-	local formatterCommand = formatterMap[extension]
-
-	if formatterCommand then
-		os.execute(formatterCommand .. " " .. filename)
-	else
-		print("No formatter found for file extension: " .. extension)
-	end
-end
-
-local function saveFile(filename)
-	print("File saved: " .. filename)
-	formatFile(filename)
-end

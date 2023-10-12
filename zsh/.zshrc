@@ -58,9 +58,6 @@ alias vim='nvim'
 # exa
 # https://github.com/ogham/exa
 # alias ls='exa -l --icons'
-# bat
-# https://github.com/sharkdp/bat
-alias cat='bat'
 # Lazygit
 # https://github.com/jesseduffield/lazygit
 alias lg='lazygit'
@@ -71,10 +68,6 @@ alias grep='rg'
 # https://github.com/ClementTsang/bottom
 # This has no alias setup in my config
 # ---
-# Fd
-# https://github.com/sharkdp/fd
-alias find='fd'
-
 
 # Change Directory Aliases (Directory Only)
 export ZSHRC=$HOME/.config/zsh/.zshrc
