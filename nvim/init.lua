@@ -181,6 +181,12 @@ require("lazy").setup {
 			vim.g.rustfmt_autosave = 1
 		end,
 	},
+	{
+		"kdheepak/lazygit.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+	},
 }
 
 local on_attach = function(_, bufnr)
@@ -246,6 +252,18 @@ lspconfig.clangd.setup {
 	end,
 	capabilities = capabilities,
 	filetypes = { "C", "C++" },
+}
+
+-- lspconfig.pyright.setup {
+-- on_attach = on_attach,
+-- capabilities = capabilities,
+-- filetypes = { "python" },
+-- }
+
+lspconfig.pylsp.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+	filetypes = { "python" },
 }
 
 require("rust-tools").setup {
@@ -325,6 +343,8 @@ vim.keymap.set("v", "<leader>/", "<CMD>'<,'>CommentToggle<CR>", { desc = "[/]/ c
 
 vim.keymap.set("n", "<leader>lf", "<CMD>!stylua .<CR>", { desc = "[L]ua [F]ormat" })
 vim.keymap.set("n", "<leader>rf", "<CMD>!cargo fmt<CR>", { desc = "[R]ust [F]ormat" })
+
+vim.keymap.set("n", "<leader>lg", "<CMD>LazyGit<CR>", { desc = "[L]azy[G]it" })
 
 -- Enable telescope fzf native, if installed
 pcall(require("telescope").load_extension, "fzf")

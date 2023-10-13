@@ -70,17 +70,20 @@ alias grep='rg'
 # ---
 
 # Change Directory Aliases (Directory Only)
-export ZSHRC=$HOME/.config/zsh/.zshrc
+export CONFIG_DIR=$HOME/.config/
+# The ZSHRC file is linked to $HOME/.zshrc
+export ZSHRC=$CONFIG_DIR/zsh/.zshrc
 # Alacritty has been dropped in favor of wezTerm
 # export ALACRITTY=$HOME/.config/alacritty/alacritty.yml
-export WEZTERM=$HOME/.config/wezterm/
-export NVIM=$HOME/.config/nvim/
+export WEZTERM=$CONFIG_DIR/wezterm/
+export NVIM=$CONFIG_DIR/nvim/
 export PROJECTS_DIR=$HOME/Projects/
 
 # Change Directory Aliases (Command)
 alias cdp='cd $PROJECTS_DIR'
 alias cdn='cd $NVIM'
 alias cdw='cd $WEZTERM'
+alias cdc='cd $CONFIG_DIR'
 
 # Vim Open Aliases (Commonly Used Config Directories and Files)
 alias viz='vim $ZSHRC'
