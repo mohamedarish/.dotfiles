@@ -171,7 +171,6 @@ require("lazy").setup {
 				sources = { { name = "crates" } },
 			}
 			crates.show()
-			require("core.utils").load_mappings "crates"
 		end,
 	},
 	{
@@ -185,6 +184,13 @@ require("lazy").setup {
 		"kdheepak/lazygit.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
+		},
+	},
+
+	{
+		"wintermute-cell/gitignore.nvim",
+		requires = {
+			"nvim-telescope/telescope.nvim", -- optional: for multi-select
 		},
 	},
 }
@@ -254,16 +260,40 @@ lspconfig.clangd.setup {
 	filetypes = { "C", "C++" },
 }
 
--- lspconfig.pyright.setup {
--- on_attach = on_attach,
--- capabilities = capabilities,
--- filetypes = { "python" },
--- }
+lspconfig.html.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+	ft = { "html" },
+}
+
+lspconfig.cssls.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+	ft = { "css", "scss", "less" },
+}
+
+lspconfig.marksman.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+	ft = { "markdown", "markdown.mdx" },
+}
 
 lspconfig.pylsp.setup {
 	on_attach = on_attach,
 	capabilities = capabilities,
 	filetypes = { "python" },
+}
+
+lspconfig.dockerls.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+	filetypes = { "dockerfile" },
+}
+
+lspconfig.postgres_lsp.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+	filetypes = { "sql" },
 }
 
 require("rust-tools").setup {
