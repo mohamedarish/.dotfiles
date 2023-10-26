@@ -18,7 +18,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup {
 	{
 		"nvim-neo-tree/neo-tree.nvim",
-		branch = "v3.x",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
@@ -40,7 +39,7 @@ require("lazy").setup {
 	},
 	{
 		"nvim-lualine/lualine.nvim",
-		requires = { "nvim-tree/nvim-web-devicons" },
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {
 			options = {
 				icons_enabled = true,
@@ -189,7 +188,7 @@ require("lazy").setup {
 
 	{
 		"wintermute-cell/gitignore.nvim",
-		requires = {
+		dependencies = {
 			"nvim-telescope/telescope.nvim", -- optional: for multi-select
 		},
 	},
