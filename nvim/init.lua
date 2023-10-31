@@ -192,6 +192,37 @@ require("lazy").setup {
 			"nvim-telescope/telescope.nvim", -- optional: for multi-select
 		},
 	},
+	{
+		"xiyaowong/transparent.nvim",
+		opts = {
+			groups = { -- table: default groups
+				"Normal",
+				"NormalNC",
+				"Comment",
+				"Constant",
+				"Special",
+				"Identifier",
+				"Statement",
+				"PreProc",
+				"Type",
+				"Underlined",
+				"Todo",
+				"String",
+				"Function",
+				"Conditional",
+				"Repeat",
+				"Operator",
+				"Structure",
+				"LineNr",
+				"NonText",
+				"SignColumn",
+				"CursorLineNr",
+				"EndOfBuffer",
+			},
+			extra_groups = {}, -- table: additional groups that should be cleared
+			exclude_groups = {}, -- table: groups you don't want to clear
+		},
+	},
 }
 
 local on_attach = function(_, bufnr)
@@ -316,6 +347,8 @@ require("rust-tools").setup {
 	},
 }
 
+require("transparent").clear_prefix "NeoTree"
+
 -- Set highlight on search
 vim.o.hlsearch = false
 
@@ -406,15 +439,20 @@ vim.defer_fn(function()
 		ensure_installed = {
 			"c",
 			"cpp",
+			"css",
 			"go",
+			"html",
 			"lua",
+			"markdown",
 			"python",
 			"rust",
 			"tsx",
 			"javascript",
+			"toml",
 			"typescript",
 			"vimdoc",
 			"vim",
+			"yaml",
 		},
 
 		-- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
@@ -493,6 +531,7 @@ require("which-key").register {
 	["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
 	["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
 	["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+	["<leader>l"] = { name = "[L]{ua/azy}", _ = "which_key_ignore" },
 }
 
 -- See `:help cmp`
