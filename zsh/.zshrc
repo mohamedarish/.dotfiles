@@ -85,6 +85,11 @@ alias cdn='cd $NVIM'
 alias cdw='cd $WEZTERM'
 alias cdc='cd $CONFIG_DIR'
 
+# ls Aliases for eazy calls
+alias lsa='ls -a'
+alias lsal='ls -al'
+alias lsl='ls -l'
+
 # Vim Open Aliases (Commonly Used Config Directories and Files)
 alias viz='vim $ZSHRC'
 # alias via='vim $ALACRITTY'
