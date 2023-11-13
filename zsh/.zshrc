@@ -100,6 +100,16 @@ alias vin='cdn && vim'
 alias python='python3.11'
 alias pip='python -m pip'
 
+# alias to create and move into a directory
+mkmv() {
+	if [ "$1" != "" ]
+	then
+		mkdir "$1" && cd "$1"
+	else
+		echo "Enter a directory name"
+	fi
+}
+
 # Syntax Highlighting
 source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
