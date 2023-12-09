@@ -17,6 +17,12 @@ path+=$HOME/.cargo/bin/
 # to zsh
 path+=$go/bin
 
+# MacOS only
+PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
+
+# Add java to path
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+
 autoload -Uz compinit && compinit
 
 # old prompt settings
@@ -126,6 +132,3 @@ ZSH_HIGHLIGHT_STYLES[pre-command]='fg=43'
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
-# MacOS only
-PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
-export PATH

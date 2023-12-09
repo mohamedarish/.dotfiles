@@ -223,6 +223,11 @@ require("lazy").setup {
 			exclude_groups = {}, -- table: groups you don't want to clear
 		},
 	},
+	
+	{
+		"prettier/vim-prettier",
+		ft = { "html", "css", "js", "jsx", "ts", "tsx", "scss", "sass", "htmx" }
+	}
 }
 
 local on_attach = function(_, bufnr)
@@ -312,6 +317,19 @@ lspconfig.pylsp.setup {
 	on_attach = on_attach,
 	capabilities = capabilities,
 	filetypes = { "python" },
+	configurationSources = { "flake8" },
+	settings = {
+		pylsp = {
+			configurationSources = { "flake8" },
+			plugins = {
+				flake8 = { enabled = true, ignore = { "E203" }, maxLineLength = 88 },
+				mccabe = { enabled = false },
+				pycodestyle = { enabled = false },
+				pyflakes = { enabled = false },
+				yapf = { enabled = true },
+			},
+		},
+	},
 }
 
 lspconfig.dockerls.setup {

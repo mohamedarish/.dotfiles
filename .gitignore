@@ -3,6 +3,9 @@ config.yml
 state.yml
 *lock.json
 
+gtk-2.0/
+qBittorrent/
+
 #--------------------------------------------------#
 # The following was generated with gitignore.nvim: #
 #--------------------------------------------------#
