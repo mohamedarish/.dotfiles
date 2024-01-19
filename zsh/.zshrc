@@ -75,6 +75,10 @@ alias grep='rg'
 # This has no alias setup in my config
 # ---
 
+
+# pretty JSON in terminal
+alias jsp="json_pp -json_opt pretty, canonical"
+
 # Change Directory Aliases (Directory Only)
 export CONFIG_DIR=$HOME/.config/
 # The ZSHRC file is linked to $HOME/.zshrc
@@ -83,10 +87,10 @@ export ZSHRC=$CONFIG_DIR/zsh/.zshrc
 # export ALACRITTY=$HOME/.config/alacritty/alacritty.yml
 export WEZTERM=$CONFIG_DIR/wezterm/
 export NVIM=$CONFIG_DIR/nvim/
-export DEVELOPER_DIR=$HOME/Developer/
+export PROJECTS_DIR=$HOME/Projects/
 
 # Change Directory Aliases (Command)
-alias cdd='cd $DEVELOPER_DIR'
+alias cdp='cd $PROJECTS_DIR'
 alias cdn='cd $NVIM'
 alias cdw='cd $WEZTERM'
 alias cdc='cd $CONFIG_DIR'
@@ -131,4 +135,3 @@ ZSH_HIGHLIGHT_STYLES[pre-command]='fg=43'
 # Command Auto-completion
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-
