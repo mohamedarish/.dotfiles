@@ -87,7 +87,7 @@ export ZSHRC=$CONFIG_DIR/zsh/.zshrc
 # export ALACRITTY=$HOME/.config/alacritty/alacritty.yml
 export WEZTERM=$CONFIG_DIR/wezterm/
 export NVIM=$CONFIG_DIR/nvim/
-export PROJECTS_DIR=$HOME/Projects/
+export PROJECTS_DIR=$HOME/Developer/
 
 # Change Directory Aliases (Command)
 alias cdp='cd $PROJECTS_DIR'
