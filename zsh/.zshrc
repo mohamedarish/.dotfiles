@@ -15,7 +15,7 @@ path+=$HOME/.cargo/bin/
 #   go build
 # ````
 # to zsh
-path+=$go/bin
+path+=$HOME/go/bin
 
 # MacOS only
 PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
@@ -135,3 +135,5 @@ ZSH_HIGHLIGHT_STYLES[pre-command]='fg=43'
 # Command Auto-completion
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
+alias GI='cp $HOME/templates/.gitignore .'
