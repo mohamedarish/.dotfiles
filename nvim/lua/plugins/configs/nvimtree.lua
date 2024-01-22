@@ -19,8 +19,10 @@ local options = {
         preserve_window_proportions = true,
     },
     git = {
-        enable = false,
+        enable = true,
         ignore = true,
+        show_on_dirs = true,
+        show_on_open_dirs = false,
     },
     filesystem_watchers = {
         enable = true,
@@ -32,8 +34,8 @@ local options = {
     },
     renderer = {
         root_folder_label = false,
-        highlight_git = false,
-        highlight_opened_files = "none",
+        highlight_git = "name",
+        highlight_opened_files = "all",
 
         indent_markers = {
             enable = false,
@@ -44,7 +46,7 @@ local options = {
                 file = true,
                 folder = true,
                 folder_arrow = true,
-                git = false,
+                git = true,
             },
 
             glyphs = {
