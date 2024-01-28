@@ -136,4 +136,4 @@ ZSH_HIGHLIGHT_STYLES[pre-command]='fg=43'
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
-alias GI='cp $HOME/templates/.gitignore .'
+alias gignore='cp $HOME/templates/.gitignore .'
