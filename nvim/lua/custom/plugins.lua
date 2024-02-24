@@ -36,17 +36,16 @@ local plugins = {
         "black",
         "debugpy",
         "mypy",
-        "ruff",
         "pyright",
+        "ruff-lsp",
 
         -- lua
         "lua-language-server",
-        "luacheck",
+        "selene",
         "stylua",
 
         -- c and cpp
         "clangd",
-        "clang-format",
         "codelldb",
 
         -- markdown
@@ -63,8 +62,7 @@ local plugins = {
 
         --json
         "json-lsp",
-        "jsonlint",
-        "fixjson",
+        -- jsonls installed using pip
 
         -- go
         "gopls",

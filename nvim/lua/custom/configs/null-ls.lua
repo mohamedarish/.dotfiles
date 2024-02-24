@@ -6,13 +6,14 @@ local opts = {
     -- python
     null_ls.builtins.formatting.black,
     null_ls.builtins.diagnostics.mypy,
-    null_ls.builtins.diagnostics.ruff,
+    null_ls.builtins.diagnostics.ruff_lsp,
 
     -- c and cpp
-    null_ls.builtins.formatting.clang_format,
+    null_ls.builtins.diagnostics.clangd,
+    null_ls.builtins.formatting.clangd,
 
     -- lua
-    null_ls.builtins.diagnostics.luacheck,
+    null_ls.builtins.diagnostics.selene,
     null_ls.builtins.formatting.stylua,
 
     -- markdown
@@ -24,8 +25,8 @@ local opts = {
     null_ls.builtins.formatting.yamlfmt,
 
     -- json
-    null_ls.builtins.diagnostics.jsonlint,
-    null_ls.builtins.formatting.fixjson,
+    -- null_ls.builtins.diagnostics.jsonls,
+    -- null_ls.builtins.formatting.jsonls,
 
     -- go
     null_ls.builtins.formatting.gofumpt,
