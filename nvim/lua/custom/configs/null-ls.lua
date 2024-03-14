@@ -13,6 +13,7 @@ local opts = {
 
 		-- lua
 		null_ls.builtins.diagnostics.selene,
+		null_ls.builtins.diagnostics.luacheck,
 		null_ls.builtins.formatting.stylua,
 
 		-- markdown

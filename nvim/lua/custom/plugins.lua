@@ -43,6 +43,7 @@ local plugins = {
 				"lua-language-server",
 				"selene",
 				"stylua",
+				"luacheck",
 
 				-- c and cpp
 				"clangd",
