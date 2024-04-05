@@ -1,40 +1,30 @@
-local base = require "plugins.configs.lspconfig"
-local on_attach = base.on_attach
-local capabilities = base.capabilities
+-- EXAMPLE
+local on_attach = require("nvchad.configs.lspconfig").on_attach
+local on_init = require("nvchad.configs.lspconfig").on_init
+local capabilities = require("nvchad.configs.lspconfig").capabilities
 
-local ih = require "inlay-hints"
 local lspconfig = require "lspconfig"
-local util = require "lspconfig/util"
+local util = require "lspconfig.util"
+local servers = { "html", "cssls", "clangd" }
+local ih = require "inlay-hints"
 
--- local servers = {
---   "tsserver",
---   "lua_ls",
---   "eslint",
---   "cssls",
---   "rust_analyzer"
--- }
---
--- for _, lsp in ipairs(servers) do
---   lspconfig[lsp].setup({
---     on_attach = on_attach,
---     capabilities = capabilities
---   })
--- end
+-- lsps with default config
+for _, lsp in ipairs(servers) do
+	lspconfig[lsp].setup {
+		on_attach = on_attach,
+		on_init = on_init,
+		capabilities = capabilities,
+	}
+end
 
+-- typescript
 lspconfig.tsserver.setup {
 	on_attach = function(client, bufnr)
 		ih.on_attach(client, bufnr)
 		on_attach(client, bufnr)
 	end,
+	on_init = on_init,
 	capabilities = capabilities,
-	ft = {
-		"javascript",
-		"javascriptreact",
-		"javascript.jsx",
-		"typescript",
-		"typescriptreact",
-		"typescript.tsx",
-	},
 	settings = {
 		javascript = {
 			inlayHints = {
@@ -67,6 +57,7 @@ lspconfig.lua_ls.setup {
 	on_attach = function(client, bufnr)
 		ih.on_attach(client, bufnr)
 	end,
+	on_init = on_init,
 	capabilities = capabilities,
 	ft = {
 		"lua",
@@ -80,71 +71,11 @@ lspconfig.lua_ls.setup {
 	},
 }
 
-lspconfig.eslint.setup {
-	on_attach = on_attach,
-	capabilities = capabilities,
-	ft = {
-		"html",
-		"css",
-		"javascript",
-		"javascriptreact",
-		"typescript",
-		"typescriptreact",
-	},
-}
-
-lspconfig.cssls.setup {
-	on_attach = on_attach,
-	capabilities = capabilities,
-	ft = {
-		"css",
-		"sass",
-		"scss",
-	},
-}
-
-lspconfig.rust_analyzer.setup {
-	on_attach = on_attach,
-	capabilities = capabilities,
-	ft = {
-		"rust",
-	},
-	root_dir = util.root_pattern "Cargo.toml",
-	settings = {
-		["rust-analyzer"] = {
-			diagnostics = {
-				enable = true,
-			},
-			cargo = {
-				allFeatures = true,
-			},
-		},
-	},
-}
-
-lspconfig.pyright.setup {
-	on_attach = on_attach,
-	capabilities = capabilities,
-	ft = { "python" },
-}
-
-lspconfig.clangd.setup {
-	on_attach = function(client, bufnr)
-		client.server_capabilities.signatureHelpProvider = false
-		on_attach(client, bufnr)
-	end,
-	capabilities = capabilities,
-	filetypes = { "C", "C++" },
-}
-
-lspconfig.marksman.setup {
-	on_attach = on_attach,
-	capabilities = capabilities,
-	filetypes = { "markdown" },
-}
-
 lspconfig.gopls.setup {
-	on_attach = on_attach,
+	on_attach = function(c, b)
+		ih.on_attach(c, b)
+	end,
+	on_init = on_init,
 	capabilities = capabilities,
 	cmd = { "gopls" },
 	filetypes = { "go", "gomod", "gowork", "gotmpl" },
@@ -155,6 +86,16 @@ lspconfig.gopls.setup {
 			usePlaceholders = true,
 			analyses = {
 				unusedparams = true,
+				fieldalignment = true,
+			},
+			hints = {
+				assignVariableTypes = true,
+				compositeLiteralFields = true,
+				compositeLiteralTypes = true,
+				constantValues = true,
+				functionTypeParameters = true,
+				parameterNames = true,
+				rangeVariableTypes = true,
 			},
 		},
 	},
