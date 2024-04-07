@@ -61,20 +61,12 @@ RPROMPT=$git_prompt
 
 # Direct Aliases
 alias vim='nvim'
-# exa
-# https://github.com/ogham/exa
-# alias ls='exa -l --icons'
 # Lazygit
 # https://github.com/jesseduffield/lazygit
 alias lg='lazygit'
 # RipGrep
 # https://github.com/BurntSushi/ripgrep
 alias grep='rg'
-# Bottom
-# https://github.com/ClementTsang/bottom
-# This has no alias setup in my config
-# ---
-
 
 # pretty JSON in terminal
 alias jsp="json_pp -json_opt pretty, canonical"
