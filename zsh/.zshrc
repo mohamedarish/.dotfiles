@@ -49,14 +49,14 @@ setopt prompt_subst
 
 git_prompt='%F{cyan}$(git_branch)%f'
 
-name_and_host='%B%n%b@%B%m%b'
+# name_and_host='%B%n%b@%B%m%b'
 
 # arrow_prompt='%(?.%F{bold}%F{green}↳  %f%f.%F{bold}%F{red}↳  %f%f)'
-arrow_prompt='%(?.%F{white}%K{34} $name_and_host %k%K{33} ✓%k%f%F{33}%f .%F{white}%K{red} $name_and_host %k%K{33} ✘%k%F{33}%f %f)'
+# arrow_prompt='%(?.%F{white}%K{34} $name_and_host %k%K{33} ✓%k%f%F{33}%f .%F{white}%K{red} $name_and_host %k%K{33} ✘%k%F{33}%f %f)'
 
 # PROMPT="$directory_prompt $arrow_prompt"
 # RPROMPT="$git_prompt $"
-PROMPT=$directory_prompt$'\n'$arrow_prompt
+PROMPT='[$directory_prompt]▶︎ '
 RPROMPT=$git_prompt
 
 # Direct Aliases
