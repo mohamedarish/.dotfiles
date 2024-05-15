@@ -5,8 +5,7 @@ local capabilities = require("nvchad.configs.lspconfig").capabilities
 
 local lspconfig = require "lspconfig"
 local util = require "lspconfig.util"
-local servers = { "html", "cssls", "clangd" }
-local ih = require "inlay-hints"
+local servers = { "html", "cssls" }
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
@@ -17,11 +16,43 @@ for _, lsp in ipairs(servers) do
 	}
 end
 
+lspconfig.inlay_hints = {
+	enabled = true,
+}
+
+-- c, cpp
+lspconfig.clangd.setup {
+	on_attach = function(client, bufnr)
+		local lsp_inlayhints = require "lsp-inlayhints"
+		lsp_inlayhints.on_attach(client, bufnr)
+		lsp_inlayhints.setup {}
+		lsp_inlayhints.show()
+	end,
+	on_init = on_init,
+	capabilities = capabilities,
+}
+
+-- python
+lspconfig.ruff.setup {
+	on_attach = function(client, bufnr)
+		-- NVM ruff doesn't support inlay hints
+		local lsp_inlayhints = require "lsp-inlayhints"
+		lsp_inlayhints.on_attach(client, bufnr)
+		lsp_inlayhints.setup {}
+		lsp_inlayhints.show()
+	end,
+	on_init = on_init,
+	capabilities = capabilities,
+	ft = { "python" },
+}
+
 -- typescript
 lspconfig.tsserver.setup {
 	on_attach = function(client, bufnr)
-		ih.on_attach(client, bufnr)
-		on_attach(client, bufnr)
+		local lsp_inlayhints = require "lsp-inlayhints"
+		lsp_inlayhints.on_attach(client, bufnr)
+		lsp_inlayhints.setup {}
+		lsp_inlayhints.show()
 	end,
 	on_init = on_init,
 	capabilities = capabilities,
@@ -55,7 +86,10 @@ lspconfig.tsserver.setup {
 
 lspconfig.lua_ls.setup {
 	on_attach = function(client, bufnr)
-		ih.on_attach(client, bufnr)
+		local lsp_inlayhints = require "lsp-inlayhints"
+		lsp_inlayhints.on_attach(client, bufnr)
+		lsp_inlayhints.setup {}
+		lsp_inlayhints.show()
 	end,
 	on_init = on_init,
 	capabilities = capabilities,
@@ -66,14 +100,18 @@ lspconfig.lua_ls.setup {
 		Lua = {
 			hint = {
 				enable = true,
+				setType = true,
 			},
 		},
 	},
 }
 
 lspconfig.gopls.setup {
-	on_attach = function(c, b)
-		ih.on_attach(c, b)
+	on_attach = function(client, bufnr)
+		local lsp_inlayhints = require "lsp-inlayhints"
+		lsp_inlayhints.on_attach(client, bufnr)
+		lsp_inlayhints.setup {}
+		lsp_inlayhints.show()
 	end,
 	on_init = on_init,
 	capabilities = capabilities,

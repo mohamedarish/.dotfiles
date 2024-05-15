@@ -25,8 +25,10 @@ return {
 				"css-lsp",
 				"prettier",
 				"gopls",
-				"clangd",
 				"clang-format",
+				"codelldb",
+				"ruff",
+				"black",
 			},
 		},
 	},
@@ -37,11 +39,35 @@ return {
 			ensure_installed = {
 				"vim",
 				"lua",
+				"luadoc",
 				"vimdoc",
 				"html",
 				"css",
+				"javascript",
+				"json",
+				"typescript",
 				"go",
+				"gomod",
+				"gosum",
+				"gotmpl",
+				"gowork",
 				"c",
+				"llvm",
+				"cmake",
+				"make",
+				"cpp",
+				"python",
+				"rust",
+				"git_config",
+				"git_rebase",
+				"gitcommit",
+				"gitignore",
+				"markdown",
+				"regex",
+				"sql",
+				"templ",
+				"toml",
+				"yaml",
 			},
 		},
 	},
@@ -89,25 +115,68 @@ return {
 				opts = {},
 			},
 		},
-	},
-	config = function()
-		vim.g.rustaceanvim = {
-			inlay_hints = {
-				highlight = "NonText",
-			},
-			tools = {
-				hover_actions = {
-					auto_focus = true,
+		config = function()
+			vim.g.rustaceanvim = {
+				inlay_hints = {
+					highlight = "NonText",
 				},
+				tools = {
+					hover_actions = {
+						auto_focus = true,
+					},
+				},
+				server = {
+					on_attach = function(client, bufnr)
+						local lsp_inlayhints = require "lsp-inlayhints"
+						lsp_inlayhints.on_attach(client, bufnr)
+						lsp_inlayhints.setup {}
+						lsp_inlayhints.show()
+					end,
+				},
+			}
+		end,
+	},
+	{
+		"mfussenegger/nvim-dap",
+	},
+	{
+		"jay-babu/mason-nvim-dap.nvim",
+		dependencies = {
+			"williamboman/mason.nvim",
+			"mfussenegger/nvim-dap",
+		},
+		event = "VeryLazy",
+		opts = {
+			handlers = {},
+			ensure_installed = {
+				"codelldb",
 			},
-			server = {
-				on_attach = function(client, bufnr)
-					local lsp_inlayhints = require "lsp-inlayhints"
-					lsp_inlayhints.on_attach(client, bufnr)
-					lsp_inlayhints.setup {}
-					lsp_inlayhints.show()
-				end,
-			},
-		}
-	end,
+		},
+	},
+	{
+		"rcarriga/nvim-dap-ui",
+		dependencies = {
+			"mfussenegger/nvim-dap",
+			"nvim-neotest/nvim-nio",
+		},
+		event = "VeryLazy",
+		config = function()
+			local dap = require "dap"
+			local dapui = require "dapui"
+
+			dapui.setup()
+
+			dap.listeners.after.event_initialized["dapui_config"] = function()
+				dapui.open()
+			end
+
+			dap.listeners.before.event_terminated["dapui_config"] = function()
+				dapui.close()
+			end
+
+			dap.listeners.before.event_exited["dapui_config"] = function()
+				dapui.close()
+			end
+		end,
+	},
 }

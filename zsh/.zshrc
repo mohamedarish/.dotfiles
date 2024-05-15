@@ -72,14 +72,14 @@ alias grep='rg'
 alias jsp="json_pp -json_opt pretty, canonical"
 
 # Change Directory Aliases (Directory Only)
-export CONFIG_DIR=$HOME/.config/
+export CONFIG_DIR=$HOME/.config
 # The ZSHRC file is linked to $HOME/.zshrc
 export ZSHRC=$CONFIG_DIR/zsh/.zshrc
 # Alacritty has been dropped in favor of wezTerm
 # export ALACRITTY=$HOME/.config/alacritty/alacritty.yml
-export WEZTERM=$CONFIG_DIR/wezterm/
-export NVIM=$CONFIG_DIR/nvim/
-export PROJECTS_DIR=$HOME/Developer/
+export WEZTERM=$CONFIG_DIR/wezterm
+export NVIM=$CONFIG_DIR/nvim
+export PROJECTS_DIR=$HOME/Developer
 
 # Change Directory Aliases (Command)
 alias cdp='cd $PROJECTS_DIR'
@@ -128,3 +128,4 @@ source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 alias gignore='cp $HOME/templates/.gitignore .'
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
