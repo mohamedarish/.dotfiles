@@ -6,11 +6,13 @@ local options = {
 		c = { "clang-format" },
 		cpp = { "clang-format" },
 		python = { "black" },
-		json = { "prettier" },
-		javascript = { "prettier" },
-		typescript = { "prettier" },
-		javascriptreact = { "prettier" },
-		typescriptreact = { "prettier" },
+		json = { "prettierd" },
+		javascript = { "prettierd" },
+		typescript = { "prettierd" },
+		javascriptreact = { "prettierd" },
+		typescriptreact = { "prettierd" },
+		shell = { "shfmt" },
+		markdown = { "mdformat" },
 	},
 
 	format_on_save = {
