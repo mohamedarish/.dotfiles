@@ -28,6 +28,7 @@ return {
 				"clang-format",
 				"codelldb",
 				"ruff",
+				"pylyzer",
 				"black",
 				"mdformat",
 				"shfmt",
@@ -88,11 +89,6 @@ return {
 		end,
 	},
 	{
-		"moliva/inlay-hints.nvim",
-		branch = "feat/disable-tsserver-adapter",
-		event = "VeryLazy",
-	},
-	{
 		"rust-lang/rust.vim",
 		ft = { "rust" },
 		init = function()
@@ -116,10 +112,6 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"mfussenegger/nvim-dap",
-			{
-				"lvimuser/lsp-inlayhints.nvim",
-				opts = {},
-			},
 		},
 		config = function()
 			vim.g.rustaceanvim = {
@@ -132,11 +124,8 @@ return {
 					},
 				},
 				server = {
-					on_attach = function(client, bufnr)
-						local lsp_inlayhints = require "lsp-inlayhints"
-						lsp_inlayhints.on_attach(client, bufnr)
-						lsp_inlayhints.setup {}
-						lsp_inlayhints.show()
+					on_attach = function(_, bufnr)
+						vim.lsp.inlay_hint.enable(true, { bufnr })
 					end,
 				},
 			}

@@ -22,24 +22,55 @@ lspconfig.inlay_hints = {
 
 -- c, cpp
 lspconfig.clangd.setup {
-	on_attach = function(client, bufnr)
-		local lsp_inlayhints = require "lsp-inlayhints"
-		lsp_inlayhints.on_attach(client, bufnr)
-		lsp_inlayhints.setup {}
-		lsp_inlayhints.show()
+	on_attach = function(_, bufnr)
+		vim.lsp.inlay_hint.enable(true, { bufnr })
 	end,
 	on_init = on_init,
 	capabilities = capabilities,
+	settings = {
+		clangd = {
+			InlayHints = {
+				Designators = true,
+				Enabled = true,
+				ParameterNames = true,
+				DeducedTypes = true,
+				-- BlockEnd = true, -- only in clangd v17+
+			},
+		},
+	},
 }
 
 -- python
-lspconfig.ruff.setup {
-	on_attach = function(client, bufnr)
-		-- NVM ruff doesn't support inlay hints
-		local lsp_inlayhints = require "lsp-inlayhints"
-		lsp_inlayhints.on_attach(client, bufnr)
-		lsp_inlayhints.setup {}
-		lsp_inlayhints.show()
+-- lspconfig.ruff.setup {
+-- 	on_attach = function(_, bufnr)
+-- 		vim.lsp.inlay_hint.enable(true, { bufnr })
+-- 	end,
+-- 	on_init = on_init,
+-- 	capabilities = capabilities,
+-- 	ft = { "python" },
+-- }
+
+-- lspconfig.pyre.setup {
+-- 	on_attach = function(_, bufnr)
+-- 		vim.lsp.inlay_hint.enable(true, { bufnr })
+-- 	end,
+-- 	on_init = on_init,
+-- 	capabilities = capabilities,
+-- 	ft = { "python" },
+-- }
+
+-- lspconfig.pyright.setup {
+-- 	on_attach = function(_, bufnr)
+-- 		vim.lsp.inlay_hint.enable(true, { bufnr })
+-- 	end,
+-- 	on_init = on_init,
+-- 	capabilities = capabilities,
+-- 	ft = { "python" },
+-- }
+
+lspconfig.pylyzer.setup {
+	on_attach = function(_, bufnr)
+		vim.lsp.inlay_hint.enable(true, { bufnr })
 	end,
 	on_init = on_init,
 	capabilities = capabilities,
@@ -48,11 +79,8 @@ lspconfig.ruff.setup {
 
 -- typescript
 lspconfig.tsserver.setup {
-	on_attach = function(client, bufnr)
-		local lsp_inlayhints = require "lsp-inlayhints"
-		lsp_inlayhints.on_attach(client, bufnr)
-		lsp_inlayhints.setup {}
-		lsp_inlayhints.show()
+	on_attach = function(_, bufnr)
+		vim.lsp.inlay_hint.enable(true, { bufnr })
 	end,
 	on_init = on_init,
 	capabilities = capabilities,
@@ -86,10 +114,31 @@ lspconfig.tsserver.setup {
 
 lspconfig.lua_ls.setup {
 	on_attach = function(client, bufnr)
-		local lsp_inlayhints = require "lsp-inlayhints"
-		lsp_inlayhints.on_attach(client, bufnr)
-		lsp_inlayhints.setup {}
-		lsp_inlayhints.show()
+		vim.lsp.inlay_hint.enable(true, { bufnr })
+		local path = client.workspace_folders[1].name
+		if vim.loop.fs_stat(path .. "/.luarc.json") or vim.loop.fs_stat(path .. "/.luarc.jsonc") then
+			return
+		end
+
+		client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+			runtime = {
+				-- Tell the language server which version of Lua you're using
+				-- (most likely LuaJIT in the case of Neovim)
+				version = "LuaJIT",
+			},
+			-- Make the server aware of Neovim runtime files
+			workspace = {
+				checkThirdParty = false,
+				library = {
+					vim.env.VIMRUNTIME,
+					-- Depending on the usage, you might want to add additional paths here.
+					-- "${3rd}/luv/library"
+					-- "${3rd}/busted/library",
+				},
+				-- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+				-- library = vim.api.nvim_get_runtime_file("", true)
+			},
+		})
 	end,
 	on_init = on_init,
 	capabilities = capabilities,
@@ -101,17 +150,17 @@ lspconfig.lua_ls.setup {
 			hint = {
 				enable = true,
 				setType = true,
+				arrayIndex = "Enable",
+				paramName = "All",
+				semicolon = "All",
 			},
 		},
 	},
 }
 
 lspconfig.gopls.setup {
-	on_attach = function(client, bufnr)
-		local lsp_inlayhints = require "lsp-inlayhints"
-		lsp_inlayhints.on_attach(client, bufnr)
-		lsp_inlayhints.setup {}
-		lsp_inlayhints.show()
+	on_attach = function(_, bufnr)
+		vim.lsp.inlay_hint.enable(true, { bufnr })
 	end,
 	on_init = on_init,
 	capabilities = capabilities,
