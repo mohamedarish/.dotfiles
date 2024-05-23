@@ -28,7 +28,7 @@ return {
 				"clang-format",
 				"codelldb",
 				"ruff",
-				"pylyzer",
+				"pyright",
 				"black",
 				"mdformat",
 				"shfmt",
