@@ -41,32 +41,12 @@ lspconfig.clangd.setup {
 }
 
 -- python
--- lspconfig.ruff.setup {
--- 	on_attach = function(_, bufnr)
--- 		vim.lsp.inlay_hint.enable(true, { bufnr })
--- 	end,
--- 	on_init = on_init,
--- 	capabilities = capabilities,
--- 	ft = { "python" },
--- }
-
--- lspconfig.pyre.setup {
--- 	on_attach = function(_, bufnr)
--- 		vim.lsp.inlay_hint.enable(true, { bufnr })
--- 	end,
--- 	on_init = on_init,
--- 	capabilities = capabilities,
--- 	ft = { "python" },
--- }
-
--- lspconfig.pyright.setup {
--- 	on_attach = function(_, bufnr)
--- 		vim.lsp.inlay_hint.enable(true, { bufnr })
--- 	end,
--- 	on_init = on_init,
--- 	capabilities = capabilities,
--- 	ft = { "python" },
--- }
+lspconfig.ruff.setup {
+	on_attach = on_attach,
+	on_init = on_init,
+	capabilities = capabilities,
+	ft = { "python" },
+}
 
 lspconfig.pylyzer.setup {
 	on_attach = function(_, bufnr)
@@ -154,6 +134,41 @@ lspconfig.lua_ls.setup {
 				paramName = "All",
 				semicolon = "All",
 			},
+			completion = {
+				workspaceWord = true,
+				callSnippet = "Both",
+			},
+			misc = {
+				parameters = {
+					"--log-level=trace",
+				},
+			},
+			diagnostics = {
+				disable = { "incomplete-signature-doc" },
+				-- enable = false,
+				groupSeverity = {
+					strong = "Warning",
+					strict = "Warning",
+				},
+				groupFileStatus = {
+					["ambiguity"] = "Opened",
+					["await"] = "Opened",
+					["codestyle"] = "None",
+					["duplicate"] = "Opened",
+					["global"] = "Opened",
+					["luadoc"] = "Opened",
+					["redefined"] = "Opened",
+					["strict"] = "Opened",
+					["strong"] = "Opened",
+					["type-check"] = "Opened",
+					["unbalanced"] = "Opened",
+					["unused"] = "Opened",
+				},
+				unusedLocalExclude = { "_*" },
+			},
+			workspace = {
+				checkThirdParty = false,
+			},
 		},
 	},
 }
@@ -161,6 +176,7 @@ lspconfig.lua_ls.setup {
 lspconfig.gopls.setup {
 	on_attach = function(_, bufnr)
 		vim.lsp.inlay_hint.enable(true, { bufnr })
+		require("neodev").setup()
 	end,
 	on_init = on_init,
 	capabilities = capabilities,
