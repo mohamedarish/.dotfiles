@@ -40,14 +40,14 @@ function git_branch()
     then
         echo "%T"
     else
-        echo " $branch"
+        echo "%F{44}%f %F{cyan}$branch%f"
     fi
 }
 
 # Enable substitution in the prompt
 setopt prompt_subst
 
-git_prompt='%F{cyan}$(git_branch)%f'
+git_prompt='$(git_branch)'
 
 # name_and_host='%B%n%b@%B%m%b'
 
@@ -56,7 +56,7 @@ git_prompt='%F{cyan}$(git_branch)%f'
 
 # PROMPT="$directory_prompt $arrow_prompt"
 # RPROMPT="$git_prompt $"
-PROMPT='[$directory_prompt]▶︎ '
+PROMPT='%(?.%F{green}[%f$directory_prompt%F{green}]▶︎%f.%F{red}[%f$directory_prompt%F{red}]▶︎%f) '
 RPROMPT=$git_prompt
 
 # Direct Aliases
