@@ -1,8 +1,8 @@
 local options = {
 	formatters_by_ft = {
 		lua = { "stylua" },
-		css = { "prettier" },
-		html = { "prettier" },
+		css = { "prettierd" },
+		html = { "prettierd" },
 		c = { "clang-format" },
 		cpp = { "clang-format" },
 		python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
@@ -11,6 +11,7 @@ local options = {
 		typescript = { "prettierd" },
 		javascriptreact = { "prettierd" },
 		typescriptreact = { "prettierd" },
+		vue = { "prettierd" },
 		shell = { "shfmt" },
 		markdown = { "mdformat" },
 	},

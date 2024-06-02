@@ -48,20 +48,22 @@ lspconfig.ruff.setup {
 	ft = { "python" },
 }
 
-lspconfig.pyright.setup {
-	on_attach = on_attach,
-	on_init = on_init,
-	capabilities = capabilities,
-	ft = { "python" },
-	Settings = {
-		python = {
-			analysis = {
-				diagnosticMode = "off",
-				typeCheckingMode = "strict",
-			},
-		},
-	},
-}
+-- lspconfig.pylyzer.setup {
+-- 	on_attach = function(_, bufnr)
+-- 		vim.lsp.inlay_hint.enable(true, { bufnr })
+-- 	end,
+-- 	on_init = on_init,
+-- 	capabilities = capabilities,
+-- 	ft = { "python" },
+-- 	settings = {
+-- 		python = {
+-- 			checkOnType = false,
+-- 			diagnostics = false,
+-- 			inlayHints = true,
+-- 			smartCompletion = true,
+-- 		},
+-- 	},
+-- }
 
 -- typescript
 lspconfig.tsserver.setup {
@@ -96,6 +98,22 @@ lspconfig.tsserver.setup {
 			},
 		},
 	},
+	-- init_options = {
+	-- 	plugins = {
+	-- 		{
+	-- 			name = "@vue/typescript-plugin",
+	-- 			languages = { "vue" },
+	-- 		},
+	-- 	},
+	-- },
+	ft = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+}
+
+lspconfig.volar.setup {
+	on_attach = on_attach,
+	on_init = on_init,
+	capabilities = capabilities,
+	ft = { "vue" },
 }
 
 lspconfig.lua_ls.setup {
