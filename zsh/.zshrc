@@ -98,7 +98,7 @@ alias viw='cdw && vim'
 alias vin='cdn && vim'
 
 # Python 3.11 -> python
-alias python='python3.11'
+alias python='python3'
 alias pip='python -m pip'
 
 # alias to create and move into a directory
@@ -128,4 +128,7 @@ source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 alias gignore='cp $HOME/templates/.gitignore .'
-export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export PATH="$HOME/.cpp:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"

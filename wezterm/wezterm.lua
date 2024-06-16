@@ -17,5 +17,6 @@ font(config)
 colorscheme(config)
 tab(config)
 config.default_cursor_style = "BlinkingBar"
+-- config.default_prog = { "/Users/mohamedarish/.cpp/chepp" } -- Make deault shell chepp
 
 return config
